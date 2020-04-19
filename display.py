@@ -29,8 +29,9 @@ def new_zbuffer( width = XRES, height = YRES ):
 
 def plot( screen, zbuffer, color, x, y, z ):
     newy = YRES - 1 - y
-    if ( x >= 0 and x < XRES and newy >= 0 and newy < YRES ):
+    if ( x >= 0 and x < XRES and newy >= 0 and newy < YRES and zbuffer[newy][x] <= z):
         screen[newy][x] = color[:]
+        zbuffer[newy][x] = z
 
 def clear_screen( screen ):
     for y in range( len(screen) ):
@@ -76,6 +77,7 @@ def save_extension( screen, fname ):
 def display( screen ):
     ppm_name = 'pic.ppm'
     save_ppm( screen, ppm_name )
-    p = Popen( ['display', ppm_name], stdin=PIPE, stdout = PIPE )
+    #p = Popen( ['display', ppm_name], stdin=PIPE, stdout = PIPE )
+    p = Popen( ['IMdisplay', ppm_name], stdin=PIPE, stdout = PIPE )
     p.communicate()
     remove(ppm_name)

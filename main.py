@@ -1,6 +1,6 @@
 from display import *
 from draw import *
-from parser import *
+from parserp import *
 from matrix import *
 import math
 
@@ -15,5 +15,3 @@ csystems = [ t ]
 
 
 parse_file( 'script', edges, polygons, csystems, screen, zbuffer, color )
-
-
