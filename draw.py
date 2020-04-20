@@ -95,6 +95,7 @@ def draw_polygons( polygons, screen, zbuffer, color ):
         if normal[2] > 0:
             scanline_convert(polygons, point, screen, zbuffer)
 
+            '''
             draw_line( int(polygons[point][0]),
                        int(polygons[point][1]),
                        polygons[point][2],
@@ -116,6 +117,7 @@ def draw_polygons( polygons, screen, zbuffer, color ):
                        int(polygons[point+2][1]),
                        polygons[point+2][2],
                        screen, zbuffer, color)
+            '''
 
         point+= 3
 
@@ -367,6 +369,7 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             d = A - B/2
             dy_northeast = -1
             d_northeast = A - B
+        pixels = x1 - x0 + 1
 
     else: #octants 2/7
         tall = True
@@ -386,8 +389,13 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             d_east = -1 * B
             loop_start = y1
             loop_end = y
+        pixels = y1 - y0 + 1
+    if y1 - y0 == 0:
+        pixels = x1 - x0 + 1
+
+    dz = (z1 - z0) / pixels
     while ( loop_start < loop_end ):
-        plot( screen, zbuffer, color, x, y, 0 )
+        plot( screen, zbuffer, color, x, y, z )
         if ( (wide and ((A > 0 and d > 0) or (A < 0 and d < 0))) or
              (tall and ((A > 0 and d < 0) or (A < 0 and d > 0 )))):
 
@@ -398,5 +406,6 @@ def draw_line( x0, y0, z0, x1, y1, z1, screen, zbuffer, color ):
             x+= dx_east
             y+= dy_east
             d+= d_east
+        z += dz
         loop_start+= 1
-    plot( screen, zbuffer, color, x, y, 0 )
+    plot( screen, zbuffer, color, x, y, z )
